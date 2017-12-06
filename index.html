@@ -131,15 +131,15 @@
 
               container.innerHTML = '<div>'
                 + '<h3>VIIRS/MODIS Active Fire Detection</h3>' 
-                + '<h4>VIIRS (small circles) 375m resolution </h4>' 
-                + '<h4>MODIS (large circles) 1km resolution </h4>'
+                + '<h4>VIIRS (small circles) 375m resolution <br>' 
+                + 'MODIS (large circles) 1km resolution </h4>'
                 + 'age of data'
                 + '<table id="travel-modes">'
                 + table_row
                 + '</table>'
                 + '<br>time window (' + window + ' hours)<br>'
                 + buttons
-                + '<br><a href="https://github.com/burritojustice/viirs-modis-fire-map">Learn more</a>'
+                + '<br>Zoom in for metadata, <a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more</a>'
                 + '</div>';
               L.DomEvent.on(container, "click", this.onClick);
               return container;
