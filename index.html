@@ -60,13 +60,13 @@
         position: 'bottomleft'
       };
       geocoder.addTo(map);
-      L.Mapzen.bug({
-        name: 'Sonoma & Napa VIIRS fire map',
-        link: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
-        tweet: 'US fire map of VIIRS/MODIS data, made with @mapzen',
-        repo: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
-        description: 'Zoomable map of VIIRS/MODIS data, ~12 hours per color, brighter colors newer data. Smaller circles = VIIRS 375m meter resolution data via NASA/NOAA I-Band Active Fire Data on Suomi polar orbiting satellite. Bigger circles = 1km MODIS data via Terra and Aqua satellites. Live shapefile -> GeoJSON conversion via geolambda! Thanks devseed! Click Github repo for more info.'
-});
+//       L.Mapzen.bug({
+//         name: 'Sonoma & Napa VIIRS fire map',
+//         link: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
+//         tweet: 'US fire map of VIIRS/MODIS data, made with @mapzen',
+//         repo: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
+//         description: 'Zoomable map of VIIRS/MODIS data, ~12 hours per color, brighter colors newer data. Smaller circles = VIIRS 375m meter resolution data via NASA/NOAA I-Band Active Fire Data on Suomi polar orbiting satellite. Bigger circles = 1km MODIS data via Terra and Aqua satellites. Live shapefile -> GeoJSON conversion via geolambda! Thanks devseed! Click Github repo for more info.'
+// });
 
 
     map.on('tangramloaded', function(e){
@@ -90,7 +90,6 @@
               var table_1 = '<tr><td><div class="circle" style="background: rgba('
               var table_2 = ');"></div></td><td>'
 
-              
               var labels = {}
               var fire_colors = [0,30,60,90,120,150,180,225,250]
               var table_row = ''
@@ -133,7 +132,8 @@
               container.innerHTML = '<div>'
                 + '<h3>VIIRS/MODIS Active Fire Detection</h3>' 
                 + '<h4>VIIRS (small circles) 375m resolution </h4>' 
-                + '<h4>MODIS (large circles) 1km resolution </h4>' 
+                + '<h4>MODIS (large circles) 1km resolution </h4>'
+                + '<a href='https://github.com/burritojustice/viirs-modis-fire-map'>Learn more</a>'
                 + 'age of data'
                 + '<table id="travel-modes">'
                 + table_row
