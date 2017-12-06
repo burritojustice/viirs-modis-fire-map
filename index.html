@@ -100,6 +100,7 @@
                              + '<td><input type="radio" name="window" value="1" onclick="updateTimeWindow(this.value)">1</td> '
                              + '<td><input type="radio" name="window" value="2" onclick="updateTimeWindow(this.value)">2</td> '
                              + '<td><input type="radio" name="window" value="4" onclick="updateTimeWindow(this.value)">4</td> '
+                             + '<td><input type="radio" name="window" value="5" onclick="updateTimeWindow(this.value)">5</td> '
                              + '</tr><tr>'
                              + '<td><input type="radio" name="window" value="6" onclick="updateTimeWindow(this.value)">6</td> '
                              + '<td><input type="radio" name="window" value="8" onclick="updateTimeWindow(this.value)">8</td> '
@@ -139,7 +140,7 @@
                 + '</table>'
                 + '<br>time window (' + window + ' hours)<br>'
                 + buttons
-                + '<br>Zoom in for metadata, <a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more</a>'
+                + '<br>Zoom in for metadata<br><a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more</a>'
                 + '</div>';
               L.DomEvent.on(container, "click", this.onClick);
               return container;
