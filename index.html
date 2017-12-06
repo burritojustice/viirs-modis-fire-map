@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Live US Active Fire Map, VIIRS (375m resolution) & MODIS (1km)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://mapzen.com/js/mapzen.css" />
+    <script src="https://mapzen.com/js/mapzen.min.js"></script>
+    <style>
+      html, body { margin: 0; padding: 0; }
+      #map { height: 100%; width: 100%; position: absolute; }
+
+    .legend {
+        background: rgba(255, 255, 255, 0.85);
+        padding: 5px 10px;
+        width: 160px; /*width: 120px;*/
+        border-radius: 5px;
+    }
+    .circle {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+    .tooltip-content {
+        width: 300px;
+        word-wrap: break-word;
+    }
+    .tooltip-content p {
+        margin: 2px 0;
+    }
+    /* leaflet override forces tooltip text to wrap */
+    .leaflet-tooltip{
+        white-space: normal;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+    var scene,
+        legend,
+        window;
+        
+      var map = L.Mapzen.map('map', {
+        center: [38.4294, -122.5822],
+        zoom: 10,
+        tangramOptions: {
+          scene: 'https://mapzen.com/api/scenes/22/1141/resources/blank.yaml', //was /1119
+          attribution: '© <a href="https://www.mapzen.com/rights">Mapzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://www.mapzen.com/rights/#services-and-data-sources">others</a>'
+        }
+      });
+      L.Mapzen.hash({
+        map: map
+      })
+      L.control.scale().addTo(map);
+      var geocoder = L.Mapzen.geocoder('mapzen-ojDtb4R', geocoderOptions);
+      var geocoderOptions = {
+        position: 'bottomleft'
+      };
+      geocoder.addTo(map);
+      L.Mapzen.bug({
+        name: 'Sonoma & Napa VIIRS fire map',
+        link: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
+        tweet: 'US fire map of VIIRS/MODIS data, made with @mapzen',
+        repo: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
+        description: 'Zoomable map of VIIRS/MODIS data, ~12 hours per color, brighter colors newer data. Smaller circles = VIIRS 375m meter resolution data via NASA/NOAA I-Band Active Fire Data on Suomi polar orbiting satellite. Bigger circles = 1km MODIS data via Terra and Aqua satellites. Live shapefile -> GeoJSON conversion via geolambda! Thanks devseed! Click Github repo for more info.'
+});
+
+
+    map.on('tangramloaded', function(e){
+      console.log('tangram loaded')
+      var tangramLayer = e.tangramLayer;
+      scene = tangramLayer.scene;
+      window = 
+      buildLegend();
+      })
+
+
+    function buildLegend(){
+        var LegendControl = L.Control.extend({
+          options: {
+              position: 'topright'
+          },
+          onAdd: function (map) {
+              console.log('adding container')
+              var container = L.DomUtil.create('div', 'legend');
+              
+              var table_1 = '<tr><td><div class="circle" style="background: rgba('
+              var table_2 = ');"></div></td><td>'
+
+              
+              var labels = {}
+              var fire_colors = [0,30,60,90,120,150,180,225,250]
+              var table_row = ''
+              var window = scene.config.global.window
+              var hours 
+              var buttons = // '<form action="" '
+                              '<table><tr>'
+                             + '<td><input type="radio" name="window" value="1" onclick="updateTimeWindow(this.value)">1</td> '
+                             + '<td><input type="radio" name="window" value="2" onclick="updateTimeWindow(this.value)">2</td> '
+                             + '<td><input type="radio" name="window" value="4" onclick="updateTimeWindow(this.value)">4</td> '
+                             + '</tr><tr>'
+                             + '<td><input type="radio" name="window" value="6" onclick="updateTimeWindow(this.value)">6</td> '
+                             + '<td><input type="radio" name="window" value="8" onclick="updateTimeWindow(this.value)">8</td> '
+                             + '<td><input type="radio" name="window" value="10" onclick="updateTimeWindow(this.value)">10</td> '
+                             + '<td><input type="radio" name="window" value="12" onclick="updateTimeWindow(this.value)">12</td> '
+                             + '</tr></table>'
+//                            + '</form>'
+
+              
+              var i = 0
+              
+              for (var item in fire_colors){
+                    console.log(i + '/' + fire_colors[i])
+                    console.log(scene.config.global.viridis_plasma[item])
+
+                    labels.color = convertRGB(scene.config.global.viridis_plasma[fire_colors[item]].slice())
+//                     console.log(labels.color)
+                    labels.short = window*8 - (window * (i - 1))
+//                     console.log(labels.short)
+                    table_row += table_1 + labels.color + table_2 + labels.short + ' hours' 
+//                     console.log(table_row) // for item-by-item legend-building troubleshooting
+                    i = i + 1 
+                } 
+                
+              table_row += table_1 + '1.0,1.0,1.0,1.0' + table_2 + ' < ' + window + ' hours' 
+
+              console.log(table_row) // the whole dynamically generated portion of the legend
+              
+
+              container.innerHTML = '<div>'
+                + '<h3>VIIRS/MODIS Active Fire Detection</h3>' 
+                + '<h4>VIIRS (small circles) 375m resolution </h4>' 
+                + '<h4>MODIS (large circles) 1km resolution </h4>' 
+                + 'age of data'
+                + '<table id="travel-modes">'
+                + table_row
+                + '</table>'
+                + '<br>time window (' + window + ' hours)<br>'
+                + buttons
+                + '</div>';
+              L.DomEvent.on(container, "click", this.onClick);
+              return container;
+          },
+          onClick: function (e) {
+            // stop propagation to avoid triggering onMapClick
+            e.stopPropagation();
+//             updateMap()
+
+          }
+        });
+        legend = new LegendControl();
+        map.addControl(legend);
+        console.log('legend added')
+    }
+    
+    // 
+    function updateTimeWindow(selection){
+        if (selection){
+            scene.config.global.window = parseInt(selection);
+            scene.updateConfig();
+            map.removeControl(legend)
+            buildLegend();
+
+            console.log('updated window to ' + selection )
+        }
+    }
+    
+    function convertRGB(color){
+        color[0] = Math.floor(color[0]*255)
+        color[1] = Math.floor(color[1]*255)
+        color[2] = Math.floor(color[2]*255)
+        color[3] = 0.75
+        //console.log('converted color to rgb 255:' + color.toString())
+        return color
+    }
+
+
+
+    </script>
+  </body>
+</html>
