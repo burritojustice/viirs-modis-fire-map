@@ -94,7 +94,7 @@
         center: [38.4294, -122.5822],
         zoom: 10,
         tangramOptions: {
-          scene: 'https://mapzen.com/api/scenes/22/1271/resources/blank.yaml', //was 1141, was /1119
+          scene: 'https://mapzen.com/api/scenes/22/1277/resources/blank.yaml', //was 1141, was /1119
           attribution: '© <a href="https://www.mapzen.com/rights">Mapzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://www.mapzen.com/rights/#services-and-data-sources">others</a>'
         }
       });
@@ -120,7 +120,7 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-      time_window = scene.config.global.window
+//       window = 
       buildLegend();
       })
 
@@ -133,19 +133,22 @@
           onAdd: function (map) {
               console.log('adding container')
               var container = L.DomUtil.create('div', 'legend');
+              
               L.DomEvent.disableClickPropagation(container);
               L.DomEvent.disableScrollPropagation(container);
+              
+              // build the color slider
               var slider = L.DomUtil.create('input', 'slider');
               slider.type = "range";
               slider.min = "1";
               slider.max = "12";
-              slider.value = time_window;
-              slider.id = "time_window";
+              slider.value = "12";
+              slider.id = "time_window"; 
               var slider_container = L.DomUtil.create('div', 'slider_container');
               slider_container.appendChild(slider);
               
               var output = L.DomUtil.create('div', 'slider_value');
-              output.innerHTML = "Time window: " + time_window + ' hours';
+              output.innerHTML = "Time window: " + slider.value + ' hours';
               slider_container.appendChild(output);
               var self = this
               slider.oninput = function() {
@@ -154,34 +157,36 @@
                     self.updateTimeWindow(this.value)
               }
               
+              // build the animation slider
+              var animator = L.DomUtil.create('input', 'animator');
+              animator.type = "range";
+              animator.min = "1";
+              animator.max = "168";
+              animator.value = "12";
+              animator.id = "time_window"; 
+              var animator_container = L.DomUtil.create('div', 'animator_container');
+              animator_container.appendChild(animator);     
+              
+              var animator_output = L.DomUtil.create('div', 'animator_value');
+              animator_output.innerHTML = "Hours back: " + animator.value;
+              animator_container.appendChild(animator_output);
+//               var animator_self = this
+              animator.oninput = function() {
+                    console.log('animating')
+                    animator_output.innerHTML =  "Hours back: " + this.value;
+                    this.animate(this.value)
+              }                       
+                            
+              
               var table_1 = '<tr><td><div class="circle" style="background: rgba('
               var table_2 = ');"></div></td><td>'
 
               var labels = {}
-//               var fire_colors = [0,30,60,90,120,150,180,225,250]
               var table_row = ''
               time_window = scene.config.global.window
               var hours 
-              var buttons = // '<form action="" '
-                              '<table><tr>'
-                             + '<td><input type="radio" name="window" value="1" onclick="updateTimeWindow(this.value)">1</td> '
-                             + '<td><input type="radio" name="window" value="2" onclick="updateTimeWindow(this.value)">2</td> '
-                             + '<td><input type="radio" name="window" value="4" onclick="updateTimeWindow(this.value)">4</td> '
-                             + '<td><input type="radio" name="window" value="5" onclick="updateTimeWindow(this.value)">5</td> '
-                             + '</tr><tr>'
-                             + '<td><input type="radio" name="window" value="6" onclick="updateTimeWindow(this.value)">6</td> '
-                             + '<td><input type="radio" name="window" value="8" onclick="updateTimeWindow(this.value)">8</td> '
-                             + '<td><input type="radio" name="window" value="10" onclick="updateTimeWindow(this.value)">10</td> '
-                             + '<td><input type="radio" name="window" value="12" onclick="updateTimeWindow(this.value)">12</td> '
-                             + '</tr></table>'
-//                            + '</form>'
-
-
-
-
-              
-              var i = 0
-              
+//               var buttons = // '<form action="" '
+              var i = 0            
               for (var item in fire_colors){
 //                     console.log(i + '/' + fire_colors[i])
 //                     console.log(scene.config.global.viridis_plasma[item])
@@ -210,10 +215,11 @@
                 + table_row
                 + '</table>'
                 + '<div id="demo"></div>'
-
                 + '</div>';
               L.DomEvent.on(container, "click", this.onClick);
               container.appendChild(slider_container)
+              container.appendChild(animator_container)
+
               return container;
               
               
@@ -226,6 +232,10 @@
             // stop propagation to avoid triggering onMapClick
             e.stopPropagation();
 //             updateMap()
+          },
+          animate: function(selection){
+            scene.config.global.hours_back = parseInt(selection)
+            scene.updateConfig();
           },
           updateTimeWindow: function(selection){
             if (selection){
@@ -252,11 +262,8 @@
                     console.log(table.rows[i].cells[1].innerHTML) // for item-by-item legend-building troubleshooting
                     i = i + 1 
                 } 
-                
               table.rows[i].cells[1].innerHTML = '< ' + time_window + ' hours' 
-
 //               console.log(table_row) // the whole dynamically generated portion of the legend
-              
         }
     
     });
