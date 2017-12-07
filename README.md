@@ -16,7 +16,7 @@ https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fi
 
 This displays the 7 day file for the contiguous US -- you could easily load other areas of the world or the global files, see below.
 
-Fire names are from GeoMAC/USGS:
+Fire names and boundaries are from GeoMAC/USGS -- these are updated daily, so don't expect to see it until a day after a fire is named.
 
 https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/
 
