@@ -4,8 +4,6 @@ _update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now wit
 
 ![](viirs-modis-ventura.png)
 
-![](https://s3.amazonaws.com/mapzen-assets/resources/viirs-375-napa/sonoma_napa_fire_map.png)
-
 ## data
 
 US (Conterminous and Hawaii) Fire data (375m resolution) via NASA/NOAA VIIRS (Suomi polar orbit) and MODIS (1km resolution), along with active fire boundaries from the USGS.
