@@ -120,7 +120,7 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-      window = 
+      time_window = scene.config.global.window
       buildLegend();
       })
 
@@ -139,13 +139,13 @@
               slider.type = "range";
               slider.min = "1";
               slider.max = "12";
-              slider.value = "12";
+              slider.value = time_window;
               slider.id = "time_window";
               var slider_container = L.DomUtil.create('div', 'slider_container');
               slider_container.appendChild(slider);
               
               var output = L.DomUtil.create('div', 'slider_value');
-              output.innerHTML = "Time window: " + slider.value + ' hours';
+              output.innerHTML = "Time window: " + time_window + ' hours';
               slider_container.appendChild(output);
               var self = this
               slider.oninput = function() {
