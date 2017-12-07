@@ -1,4 +1,6 @@
-# sonoma-napa-fire-map-viirs
+# viirs-modis-fire-map
+
+_update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now with a legend_
 
 ![](https://s3.amazonaws.com/mapzen-assets/resources/viirs-375-napa/sonoma_napa_fire_map.png)
 
@@ -23,7 +25,7 @@ https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_al
 
 scene file:
 
-https://mapzen.com/tangram/play/?api=22/1141#11.5535/38.3784/-122.5101
+https://mapzen.com/tangram/play/?api=22/1271#11.4875/34.3321/-119.1843
 
 Default colors are divided into 12 hour steps. White dots are the latest data, yellow 12 hours before that, orange the day before, red 12 hours before that -- the darker the color, the older the data, using the [Viridian palette](https://github.com/politiken-journalism/scale-color-perceptual).
 
