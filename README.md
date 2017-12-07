@@ -1,12 +1,10 @@
 # viirs-modis-fire-map
 
-_update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now with a legend_
+Conterminous US and Hawaii fire data (375m resolution) as detected by NASA/NOAA VIIRS (Suomi polar orbit) and MODIS (1km resolution), along with active fire boundaries from the USGS. Brighter colors indicate newer data.
 
 ![](viirs-modis-ventura.png)
 
 ## data
-
-US (Conterminous and Hawaii) Fire data (375m resolution) via NASA/NOAA VIIRS (Suomi polar orbit) and MODIS (1km resolution), along with active fire boundaries from the USGS.
 
 @scuerda was kind enough to set up a geolambda on AWS that [converts the NASA shapefile to GeoJSON](https://github.com/scuerda/modis-viirs-conversion) every hour! 
 
@@ -32,5 +30,8 @@ The `Time window` buttons change the time range of each color.
 
 The date can be locked down as a global. Primary source is defined on line 133, in the `viirs_7d:` url. 
 
+_update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now with a legend_
 
+p.s. The Suomi NPP satellite is named after [Verner Suomi](https://en.wikipedia.org/wiki/Verner_E._Suomi), the guy who invented [spin-scan weather satellites](https://earthobservatory.nasa.gov/Features/Suomi/suomi_2.php).
 
+https://twitter.com/UWSSEC/status/936254782158798854
