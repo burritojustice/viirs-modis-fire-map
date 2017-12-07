@@ -2,6 +2,8 @@
 
 _update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now with a legend_
 
+![](viirs-modis-ventura.png)
+
 ![](https://s3.amazonaws.com/mapzen-assets/resources/viirs-375-napa/sonoma_napa_fire_map.png)
 
 ## data
