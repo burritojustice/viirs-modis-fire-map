@@ -34,15 +34,62 @@
     .leaflet-tooltip{
         white-space: normal;
     }
+    #slidecontainer {
+        width: 100%; /* Width of the outside container */
+    }
+
+    /* The slider itself */
+    .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 100%; /* Full-width */
+        height: 25px; /* Specified height */
+        background: #d3d3d3; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+    }
+
+    /* Mouse-over effects */
+    .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+    }
+
+    /* The slider handle (use webkit (Chrome, Opera, Safari, Edge) and moz (Firefox) to override default look) */ 
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #4CAF50; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px; /* Set a specific slider handle width */
+        height: 25px; /* Slider handle height */
+        background: #4CAF50; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+    }
+    
     </style>
   </head>
   <body>
     <div id="map"></div>
     <script>
-    var scene,
-        legend,
-        window;
+
         
+
+         
+
+
+        var scene,
+            legend,
+            window,
+            time_window;
+    var fire_colors = [0,30,60,90,120,150,180,225,250]
+
       var map = L.Mapzen.map('map', {
         center: [38.4294, -122.5822],
         zoom: 10,
@@ -86,15 +133,35 @@
           onAdd: function (map) {
               console.log('adding container')
               var container = L.DomUtil.create('div', 'legend');
+              L.DomEvent.disableClickPropagation(container);
+              L.DomEvent.disableScrollPropagation(container);
+              var slider = L.DomUtil.create('input', 'slider');
+              slider.type = "range";
+              slider.min = "1";
+              slider.max = "12";
+              slider.value = "12";
+              slider.id = "time_window";
+              var slider_container = L.DomUtil.create('div', 'slider_container');
+              slider_container.appendChild(slider);
+              
+              var output = L.DomUtil.create('div', 'slider_value');
+              output.innerHTML = "Time window: " + slider.value + ' hours';
+              slider_container.appendChild(output);
+              var self = this
+              slider.oninput = function() {
+                    console.log('sliding')
+                    output.innerHTML =  "Time window: " + this.value + " hours";
+                    self.updateTimeWindow(this.value)
+              }
               
               var table_1 = '<tr><td><div class="circle" style="background: rgba('
               var table_2 = ');"></div></td><td>'
 
               
               var labels = {}
-              var fire_colors = [0,30,60,90,120,150,180,225,250]
+//               var fire_colors = [0,30,60,90,120,150,180,225,250]
               var table_row = ''
-              var window = scene.config.global.window
+              time_window = scene.config.global.window
               var hours 
               var buttons = // '<form action="" '
                               '<table><tr>'
@@ -109,23 +176,26 @@
                              + '</tr></table>'
 //                            + '</form>'
 
+
+
+
               
               var i = 0
               
               for (var item in fire_colors){
-                    console.log(i + '/' + fire_colors[i])
-                    console.log(scene.config.global.viridis_plasma[item])
+//                     console.log(i + '/' + fire_colors[i])
+//                     console.log(scene.config.global.viridis_plasma[item])
 
                     labels.color = convertRGB(scene.config.global.viridis_plasma[fire_colors[item]].slice())
 //                     console.log(labels.color)
-                    labels.short = window*8 - (window * (i - 1))
+                    labels.short = time_window*8 - (time_window * (i - 1))
 //                     console.log(labels.short)
                     table_row += table_1 + labels.color + table_2 + labels.short + ' hours' 
 //                     console.log(table_row) // for item-by-item legend-building troubleshooting
                     i = i + 1 
                 } 
                 
-              table_row += table_1 + '1.0,1.0,1.0,1.0' + table_2 + ' < ' + window + ' hours' 
+              table_row += table_1 + '1.0,1.0,1.0,1.0' + table_2 + ' < ' + time_window + ' hours' 
 
               console.log(table_row) // the whole dynamically generated portion of the legend
               
@@ -135,38 +205,68 @@
                 + '<h4>VIIRS (small circles) 375m resolution </h4>' 
                 + '<h4>MODIS (large circles) 1km resolution </h4>' 
                 + 'age of data'
-                + '<table id="travel-modes">'
+                + '<table id="hours">'
                 + table_row
                 + '</table>'
-                + '<br>time window (' + window + ' hours)<br>'
-                + buttons
+//                 + '<br id="time_window">time window (' + time_window + ' hours)</br><br>'
+//                 + buttons
+//                 + '<div id="demo"></div>'
                 + '</div>';
               L.DomEvent.on(container, "click", this.onClick);
+              container.appendChild(slider_container)
               return container;
+              
+              
+         
+
+       
+              
           },
           onClick: function (e) {
             // stop propagation to avoid triggering onMapClick
             e.stopPropagation();
 //             updateMap()
+          },
+          updateTimeWindow: function(selection){
+            if (selection){
+                scene.config.global.window = parseInt(selection);
+                time_window = parseInt(selection);
+                scene.updateConfig();
+//                 map.removeControl(legend)
+//                 map.addControl(legend);
 
-          }
-        });
+            this.update();
+        
+            console.log('updated window to ' + selection + ' hours' )
+            }
+        },
+          update: function(){
+              var table = document.getElementById("hours")       
+              var labels = {}
+              var i = 0
+              for (var item in fire_colors){
+//                     console.log(i + '/' + fire_colors[i])
+                    var hours = time_window*8 - (time_window * (i - 1))
+                    console.log(hours)
+                    table.rows[i].cells[1].innerHTML = hours + ' hours'  
+                    console.log(table.rows[i].cells[1].innerHTML) // for item-by-item legend-building troubleshooting
+                    i = i + 1 
+                } 
+                
+              table.rows[i].cells[1].innerHTML = '< ' + time_window + ' hours' 
+
+//               console.log(table_row) // the whole dynamically generated portion of the legend
+              
+        }
+    
+    });
         legend = new LegendControl();
         map.addControl(legend);
         console.log('legend added')
     }
     
     // 
-    function updateTimeWindow(selection){
-        if (selection){
-            scene.config.global.window = parseInt(selection);
-            scene.updateConfig();
-            map.removeControl(legend)
-            buildLegend();
 
-            console.log('updated window to ' + selection )
-        }
-    }
     
     function convertRGB(color){
         color[0] = Math.floor(color[0]*255)
@@ -176,7 +276,7 @@
         //console.log('converted color to rgb 255:' + color.toString())
         return color
     }
-
+    
 
 
     </script>
