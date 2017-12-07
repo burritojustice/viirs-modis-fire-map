@@ -24,11 +24,9 @@ scene file:
 
 https://mapzen.com/tangram/play/?api=22/1271#11.4875/34.3321/-119.1843
 
-Default colors are divided into 12 hour steps. White dots are the latest data, yellow 12 hours before that, orange the day before, red 12 hours before that -- the darker the color, the older the data, using the [Viridian palette](https://github.com/politiken-journalism/scale-color-perceptual).
+Default colors are divided into steps -- use the slider to change the "width"/ time range of the step in hours. White dots are the latest data, yellow the steps before that, orange the step before --  the darker the color, the older the data, using the [Viridian palette](https://github.com/politiken-journalism/scale-color-perceptual).
 
-The `Time window` buttons change the time range of each color. 
-
-The date can be locked down as a global. Primary source is defined on line 133, in the `viirs_7d:` url. 
+The date can be locked down as a global in the scene file. Primary source is defined on line 133, in the `viirs_7d:` url and `modis` layer. 
 
 _update of https://github.com/burritojustice/sonoma-napa-fire-map-viirs, now with a legend_
 
