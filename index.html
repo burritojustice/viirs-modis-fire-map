@@ -150,7 +150,7 @@
               var self = this
               slider.oninput = function() {
                     console.log('sliding')
-                    output.innerHTML =  "Time window: " + this.value + " hours";
+                    output.innerHTML =  "Hours per color: " + this.value;
                     self.updateTimeWindow(this.value)
               }
               
