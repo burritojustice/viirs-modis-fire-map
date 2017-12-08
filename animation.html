@@ -88,7 +88,9 @@
             legend,
             window,
             time_window;
-    var fire_colors = [0,30,60,90,120,150,180,225,250]
+        var fire_colors = [0,30,60,90,120,150,180,225,250]
+          var hours_back = 12
+
 
       var map = L.Mapzen.map('map', {
         center: [38.4294, -122.5822],
@@ -120,8 +122,9 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-//       window = 
+      scene.config.global.hours_back = hours_back;
       buildLegend();
+      
       })
 
 
@@ -158,11 +161,13 @@
               }
               
               // build the animation slider
+
+
               var animator = L.DomUtil.create('input', 'animator');
               animator.type = "range";
-              animator.min = "1";
-              animator.max = "168";
-              animator.value = "12";
+              animator.min = "0";
+              animator.max = "100";
+              animator.value = hours_back;
               animator.id = "time_window"; 
               var animator_container = L.DomUtil.create('div', 'animator_container');
               animator_container.appendChild(animator);     
@@ -172,9 +177,16 @@
               animator_container.appendChild(animator_output);
 //               var animator_self = this
               animator.oninput = function() {
+                    var hours_back = this.value
                     console.log('animating')
-                    animator_output.innerHTML =  "Hours back: " + this.value;
-                    this.animate(this.value)
+                    var d = new Date()
+                    var hours = this.value * 3600000
+                    d.setTime(d.getTime() - hours)
+                    var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    var time_back = d.toLocaleString('en-US', options)
+                    animator_output.innerHTML = time_back + "<br>" +  "(Hours back: " + hours_back  + ")";
+                    scene.config.global.hours_back = parseInt(hours_back);
+                    scene.updateConfig();
               }                       
                             
               
@@ -210,14 +222,15 @@
                 + '<h4>VIIRS (small circles) 375m resolution <br>' 
                 + 'MODIS (large circles) 1km resolution </h4>'
                 + 'Zoom in for metadata<br><a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more</a></p>'
-                + 'Age of data'
-                + '<table id="hours">'
-                + table_row
-                + '</table>'
+                + '(pro-tip: slide to Dec 4 & use arrow keys)'
+//                 + 'Age of data'
+//                 + '<table id="hours">'
+//                 + table_row
+//                 + '</table>'
                 + '<div id="demo"></div>'
                 + '</div>';
               L.DomEvent.on(container, "click", this.onClick);
-              container.appendChild(slider_container)
+//               container.appendChild(slider_container)
               container.appendChild(animator_container)
 
               return container;
@@ -233,10 +246,10 @@
             e.stopPropagation();
 //             updateMap()
           },
-          animate: function(selection){
-            scene.config.global.hours_back = parseInt(selection)
-            scene.updateConfig();
-          },
+//           animate: function(selection){
+//             scene.config.global.hours_back = parseInt(selection)
+//             scene.updateConfig();
+//           },
           updateTimeWindow: function(selection){
             if (selection){
                 scene.config.global.window = parseInt(selection);
