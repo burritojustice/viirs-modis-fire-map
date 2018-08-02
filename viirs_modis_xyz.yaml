@@ -1,0 +1,377 @@
+import:
+    - https://www.nextzen.org/carto/refill-style/refill-style.zip
+    - https://www.nextzen.org/carto/refill-style/themes/color-gray-gold.zip
+    - https://s3.amazonaws.com/xyz-demo/data/demo.yaml
+    # - https://www.nextzen.org/carto/refill-style/11/themes/label-6.zip
+    - https://www.nextzen.org/carto/refill-style/themes/terrain-shading.zip
+    - https://www.nextzen.org/carto/refill-style/11/themes/terrain-shading-dark.zip
+
+    - https://s3.amazonaws.com/xyz-demo/scenes/plasma.yaml
+    - https://s3.amazonaws.com/xyz-demo/scenes/viridis.yaml
+
+    
+
+    
+global:
+    # sdk_bathymetry: true
+    # color_6: [0,0,1]
+    # color_5: [.8,0,.5]
+    # color_4: [1,0,0]
+    # color_3: [1,.5,0]
+    # color_2: [1,1,0]
+    # color_1: [.9,.9,.9]
+    date: | 
+        function(feature){
+            var date = feature.acq_date
+            var time = feature.acq_time
+            var date = date.replace(/\//g, '-');
+            var hour = time.slice(0, 2)
+            var minute = time.slice(2, 4)
+            var date_string = date + 'T' + hour + ':' + minute + 'Z'
+            var d = new Date(date_string);
+            return d
+            }
+    local_time: |
+        function(){
+            var date = feature.acq_date
+            var time = feature.acq_time
+            var sat = feature.satellite
+            switch(sat) {
+                case 'N':
+                    sat = "VIIRS\nSuomi NPP"
+                    break
+                case 'A':
+                    sat = "MODIS\nAqua"
+                    break
+                case 'T':
+                    sat = "MODIS\nTerra"
+                    break
+                    
+                }
+            
+            var date = date.replace(/\//g, '-');
+            var hour = time.slice(0, 2)
+            var minute = time.slice(2, 4)
+            var date_string = date + 'T' + hour + ':' + minute + 'Z'
+            var d = new Date(date_string);
+            // return date
+            var options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return d.toLocaleDateString('en-US', options) + '\n' + sat + '\n' + feature.confidence
+            // return d.toDateString() + '\n' + d.getHours() + ':' + d.getMinutes()
+            }
+    viridis_color: |
+        function(hours,window,opacity){
+            var color_10 = global.viridis_plasma[0]
+            color_10.push(opacity)
+            var color_9 = global.viridis_plasma[30]
+            color_9.push(opacity)
+            var color_8 = global.viridis_plasma[60]
+            color_8.push(opacity)
+            var color_7 = global.viridis_plasma[90]
+            color_7.push(opacity)
+            var color_6 = global.viridis_plasma[120]
+            color_6.push(opacity)
+            var color_5 = global.viridis_plasma[150]
+            color_5.push(opacity)
+            var color_4 = global.viridis_plasma[180]
+            color_4.push(opacity)
+            var color_3 = global.viridis_plasma[225]
+            color_3.push(opacity)
+            var color_2 = global.viridis_plasma[250]
+            color_2.push(opacity)
+            var color_1 = [1,1,1,opacity]
+            var color_0 = [0,1,0,opacity] 
+            if (hours > window*9){color = color_10}
+            if (hours < window*9){color = color_9}
+            if (hours < window*8){color = color_8}
+            if (hours < window*7){color = color_7}
+            if (hours < window*6){color = color_6}
+            if (hours < window*5){color = color_5}
+            if (hours < window*4){color = color_4}
+            if (hours < window*3){color = color_3}
+            if (hours < window*2){color = color_2}
+            if (hours < window){color = color_1}
+            return color
+            }
+    _viridis_color: |
+        function(hours,window){
+            if (hours > window*9){color = global.viridis_plasma[0]}
+            if (hours < window*9){color = global.viridis_plasma[30]}
+            if (hours < window*8){color = global.viridis_plasma[60]}
+            if (hours < window*7){color = global.viridis_plasma[90]}
+            if (hours < window*6){color = global.viridis_plasma[120]}
+            if (hours < window*5){color = global.viridis_plasma[150]}
+            if (hours < window*4){color = global.viridis_plasma[180]}
+            if (hours < window*3){color = global.viridis_plasma[225]}
+            if (hours < window*2){color = global.viridis_plasma[250]}
+            if (hours < window){color = [1,1,1]}
+            return color
+            }
+    modis_temperature: |
+        function(feature){
+            var temp = feature.brightness
+            var color
+            temp = (temp - 300)
+            temp = (temp / 270) * 64
+            if ($zoom > 12){
+                color = 'hsla(' + temp + ',100%,50%,0.7)'
+                }
+            else {
+                 color = [0,0,0,0]
+                }
+            return color
+            }
+    window: 8 # hours per window
+    then: [2017,09,18,12] # date string, 0 is jan, 11 is dec
+    
+styles:
+    _text:
+        base: text
+        blend_order: 2
+    _text_high:
+        base: text
+        blend_order: 0
+    _points:
+        base: points
+        blend_order: 3
+    _lines:
+        base: lines
+        blend_order: 1
+
+
+sources:
+
+    modis_fires:
+        url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y}
+        url_params: 
+            access_token: Ki_CnlGQ_g22rwjBsPs5Bg
+            clip: true
+            # tags: modis
+        # type: GeoJSON
+        type: GeoJSON
+        # url: https://s3.amazonaws.com/active-fire-data/modis_latest.geojson
+
+    active_perimeters:
+        type: GeoJSON
+        url: https://s3.amazonaws.com/active-fire-data/usgs_latest.geojson
+        generate_label_centroids: true
+
+    viirs_7d:
+        type: GeoJSON
+        # url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y}
+        url: https://xyz.api.here.com/hub/spaces/rrUK6Cb9/tile/web/{z}_{x}_{y}
+        url_params: 
+            access_token: Ki_CnlGQ_g22rwjBsPs5Bg
+            clip: true
+            # tags: viirs
+        # url: https://s3.amazonaws.com/active-fire-data/viirs_latest.geojson
+    perimeters:
+        type: GeoJSON
+        url: https://xyz.api.here.com/hub/spaces/iHRmkELz/tile/web/{z}_{x}_{y}
+        generate_label_centroids: true
+        url_params: 
+            access_token: Ki_CnlGQ_g22rwjBsPs5Bg
+            clip: true
+        
+    _digitalglobe:
+        url: https://services.digitalglobe.com/mapservice/wmtsaccess?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=DigitalGlobe:ImageryTileService&featureProfile=Accuracy_Profile&FORMAT=image/png&STYLE=&CONNECTID=1b207260-1627-4a35-945e-089b8cf09f78&TileMatrixSet=EPSG:3857&TileMatrix=EPSG:3857:{z}&TileRow={y}&TileCol={x}
+        type: Raster
+
+layers:
+    _here_sat:
+        data: {source: _digitalglobe}
+        filter: {$zoom: {min: 12}}
+        draw:
+            raster:
+                order: 1999 # draw on bottom
+
+
+    _viirs_7d:
+        # enabled: false
+        data: { source: viirs_7d }
+        # filter: 
+        #     confidence: nominal
+            # not: {confidence: low}
+        draw:
+            points:
+                # interactive: true
+                collide: false
+                # color: [1,0,0,0.3]
+                color: |
+                    function() {
+                        var data_date = global.date(feature)
+                        var now = new Date() // for live data
+                        // or set to a previous time/date, 0=jan, 11=dec!
+                        // var now = new Date(2017,09,09) 
+                        var hours = Math.abs(now - data_date) / 36e5
+                        var window = global.window // hours per color
+                        var opacity
+                        if ($zoom < 8){opacity = 0.2 }
+                        else if ($zoom > 12) {opacity = 0.4}
+                        else if ($zoom > 7) {opacity = 0.5}
+                        var color = global._viridis_color(hours,window)
+                        color.push(opacity)
+                        return color
+                    }
+                size: [[10,5px],[13,20px],[14,45px],[15,100px],[17,200px]]
+                # size: function(){ return 375 * $meters_per_pixel }
+                # size: function() { return 375/$meters_per_pixel }
+                outline:
+                #     # color: red
+                    width: 0.5px
+                    color: |
+                        function() {
+                            var data_date = global.date(feature)
+                            var now = new Date() // for live data
+                            // or set to a previous time/date, 0=jan, 11=dec!
+                            // var now = new Date(2017,09,09) 
+                            var hours = Math.abs(now - data_date) / 36e5
+                            var window = 12// global.window // hours per color
+                            var opacity = 0.5
+                            // if ($zoom < 8){opacity = 0.2 }
+                            // else if ($zoom > 12) {opacity = 0.3}
+                            // else if ($zoom > 7) {opacity = 0.6}
+                            var color = global._viridis_color(hours,window)
+                            color.push(opacity)
+                            return color
+                        }
+
+
+        labels:
+            filter: {$zoom: {min: 16}}
+            draw:
+                # _points:
+                text:
+                    style: _text
+                    # optional: false
+                    collide: false
+                    # text_source: function(){return feature.Name}
+                    # text_source: BRIGHT_TI4
+                    text_wrap: 12
+                    text_source: global.local_time
+                    # text_source: |
+                    #     function(){
+                    #         var date = feature.ACQ_DATE
+                    #         var time = feature.ACQ_TIME
+                    #         var date = date.replace(/\//g, '-');
+                    #         var hour = time.slice(0, 2)
+                    #         var minute = time.slice(2, 4)
+                    #         var date_string = date + 'T' + hour + ':' + minute + 'Z'
+                    #         var d = new Date(date_string);
+                    #         // return date
+                    #         var options = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'};
+                    #         return d.toLocaleDateString('en-US', options) + ' (VIIRS)\n' + feature.CONFIDENCE
+                    #         // return d.toDateString() + '\n' + d.getHours() + ':' + d.getMinutes()
+                    #         }
+                    # text_source: function(){return feature.ACQ_TIME +'\n'+ feature.ACQ_DATE}
+                    font:
+                        style: bold
+                        size: 10px
+                        fill: lightgrey
+                        stroke:
+                            color: black
+                            width: 2px
+
+
+    _modis_latest:
+        # enabled: false
+        data: { source: modis_fires}
+        draw:
+            points:
+                collide: false
+                # size: 10px
+                size: [[9,10px],[11,30px],[12,40px],[18,140px]]
+                # color: [1,0,0,0.5]
+                color: |
+                    function() {
+                        var data_date = global.date(feature)
+                        var now = new Date() // for live data
+                        // or set to a previous time/date, 0=jan, 11=dec!
+                        // var now = new Date(2017,09,09) 
+                        var hours = Math.abs(now - data_date) / 36e5
+                        var window = global.window // hours per color
+                        var opacity
+                        if ($zoom < 8){opacity = 0.1 }
+                        else if ($zoom > 12) {opacity = 0.3}
+                        else if ($zoom > 7) {opacity = 0.6}
+                        var color = global._viridis_color(hours,window)
+                        color.push(opacity)
+                        return color
+                    }
+                outline:
+                    width: 2px
+                    # color: global.modis_temperature(feature)
+                    color: |
+                        function(){
+                            // var opacity = .7
+                            var temp = feature.brightness
+                            temp = (temp - 300)
+                            temp = (temp / 270) * 64
+                            if ($zoom > 13){
+                                return [1,1,1,0.5]
+                                // return 'hsla(' + temp + ',100%,50%,0.7)'
+                                } 
+                            else {
+                                 return [0,0,0,0]
+                                 }
+                        }
+
+                    
+                # color: | # temperature
+                #     function() {
+                #         var temp = feature.BRIGHTNESS
+                #         temp = (temp - 300)
+                #         temp = (temp / 270) * 64
+                #         // return [temp,0.2,0]
+                #         return 'hsla(' + temp + ',100%,50%,0.6)'
+                #         // temp = temp/400
+                #         // return [temp,0,0]
+                #     }
+        label:
+            filter: {$zoom:{min: 15}}
+            draw:
+                text:
+                    style: _text_high
+                    optional: true
+                    collide: false
+                    # text_source: function(){return feature.Name}
+                    # text_source: BRIGHTNESS
+                    text_source: global.local_time
+                    font:
+                        style: bold
+                        size: 10px
+                        fill: black
+                        stroke:
+                            color: white
+                            width: 3px
+
+    perimeters:
+        data: {source: active_perimeters}
+        # data: {source: perimeters}
+        boundary:
+            draw:
+                lines:
+                    # color: red
+                    color: [1,0,0,0.7]
+                    width: 1px
+                    order: 2000
+        labels:
+            filter: {label_placement: true}
+            draw:
+                _text_high:
+                    optional: false
+                    text_source: |
+                        function(){
+                            var firename = feature.FIRENAME || feature.FIRE_NT_NM 
+                            return firename + " FIRE"
+                        }
+                    font:
+                        # transform: uppercase
+                        transform: lowercase
+                        style: bold
+                        size: 10px
+                        fill: [0,0,0,0.7]
+                        stroke:
+                            color: [1,1,1,0.8]
+                            width: 3px
+ 
