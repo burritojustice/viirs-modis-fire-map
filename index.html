@@ -193,7 +193,7 @@
                     i = i + 1 
                 } 
                 
-              table_row += table_1 + '1.0,1.0,1.0,1.0' + table_2 + ' < ' + time_window + ' hours' 
+              table_row += table_1 + '255,255,255,0.75' + table_2 + ' < ' + time_window + ' hours' 
 
               console.log(table_row) // the whole dynamically generated portion of the legend
               
@@ -271,7 +271,7 @@
         color[1] = Math.floor(color[1]*255)
         color[2] = Math.floor(color[2]*255)
         color[3] = 0.75
-        console.log(color)
+//         console.log(color)
         console.log('converted color to rgb 255:' + color.toString())
         return color
     }
