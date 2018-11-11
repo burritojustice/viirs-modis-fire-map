@@ -119,6 +119,7 @@
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
       scene.config.sources.modis_fires.url_params.tags = getToday();
+      scene.config.sources.viirs_7d.url_params.tags = getToday();
       time_window = scene.config.global.window
       buildLegend();
       })
@@ -284,8 +285,16 @@
         var date = d.getDate()
         var today = year + '-' + month + '-' + date
         var yesterday = year + '-' + month + '-' + (date - 1)
+        var ereyesterday = year + '-' + month + '-' + (date - 2)
+        var day_3 = year + '-' + month + '-' + (date - 3)
+        var day_4 = year + '-' + month + '-' + (date - 4)
+        var day_5 = year + '-' + month + '-' + (date - 5)
+        var day_6 = year + '-' + month + '-' + (date - 6)
+        var day_7 = year + '-' + month + '-' + (date - 7)
+        // yes I know I should make this a loop
+
 //         console.log("today",today)
-        return today + ',' + yesterday
+        return today + ',' + yesterday + ',' + ereyesterday + ',' + day_3  + ',' + day_4 + ',' + day_5 + ',' + day_6 + + ',' + day_7
     }
 
     </script>
