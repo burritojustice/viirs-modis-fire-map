@@ -118,6 +118,7 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
+      scene.config.sources.modis_fires.url_params.tags = getToday();
       time_window = scene.config.global.window
       buildLegend();
       })
@@ -276,7 +277,16 @@
         return color
     }
     
-
+    function getToday(){
+        var d = new Date();
+        var year = d.getFullYear()
+        var month = d.getMonth() + 1
+        var date = d.getDate()
+        var today = year + '-' + month + '-' + date
+        var yesterday = year + '-' + month + '-' + (date - 1)
+//         console.log("today",today)
+        return today + ',' + yesterday
+    }
 
     </script>
   </body>
