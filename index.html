@@ -115,6 +115,7 @@
       scene = tangramLayer.scene;
       scene.config.sources.modis_fires.url_params.tags = getToday();
       scene.config.sources.viirs_7d.url_params.tags = getToday();
+      console.log('tagging');
       time_window = scene.config.global.window
       buildLegend();
       })
@@ -246,7 +247,7 @@
                 
               table.rows[i].cells[1].innerHTML = '< ' + time_window + ' hours' 
 
-//               console.log(table_row) // the whole dynamically generated portion of the legend
+              console.log(table_row) // the whole dynamically generated portion of the legend
               
         }
     
