@@ -274,14 +274,14 @@
         var year = d.getFullYear()
         var month = d.getMonth() + 1
         var date = d.getDate()
-        var today = year + '-' + month + '-' + date
-        var yesterday = year + '-' + month + '-' + (date - 1)
-        var ereyesterday = year + '-' + month + '-' + (date - 2)
-        var day_3 = year + '-' + month + '-' + (date - 3)
-        var day_4 = year + '-' + month + '-' + (date - 4)
-        var day_5 = year + '-' + month + '-' + (date - 5)
-        var day_6 = year + '-' + month + '-' + (date - 6)
-        var day_7 = year + '-' + month + '-' + (date - 7)
+        var today = year + '-' + month + '-' + date.padStart(2, '0')
+        var yesterday = year + '-' + month + '-' + (date - 1).padStart(2, '0')
+        var ereyesterday = year + '-' + month + '-' + (date - 2).padStart(2, '0')
+        var day_3 = year + '-' + month + '-' + (date - 3).padStart(2, '0')
+        var day_4 = year + '-' + month + '-' + (date - 4).padStart(2, '0')
+        var day_5 = year + '-' + month + '-' + (date - 5).padStart(2, '0')
+        var day_6 = year + '-' + month + '-' + (date - 6).padStart(2, '0')
+        var day_7 = year + '-' + month + '-' + (date - 7).padStart(2, '0')
         // yes I know I should make this a loop
 
 //         console.log("today",today)
