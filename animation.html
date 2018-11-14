@@ -100,11 +100,11 @@
           attribution: '© <a href="https://www.nextzen.org/rights">Nextzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://here.xyz">HERE XYZ</a>'
         }
       });
-      L.Mapzen.hash({
+      L.Nextzen.hash({
         map: map
       })
       L.control.scale().addTo(map);
-      var geocoder = L.Mapzen.geocoder('mapzen-ojDtb4R', geocoderOptions);
+      var geocoder = L.Nextzen.geocoder('ge-5bdbeb8dbfb3a8f0', geocoderOptions);
       var geocoderOptions = {
         position: 'bottomleft'
       };
