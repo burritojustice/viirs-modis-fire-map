@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://mapzen.com/js/mapzen.css" />
-    <script src="https://mapzen.com/js/mapzen.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/nextzen.js@1.0.0/dist/nextzen.css" />
+    <script src="https://unpkg.com/nextzen.js@1.0.0/dist/nextzen.js"></script> 
     <style>
       html, body { margin: 0; padding: 0; }
       #map { height: 100%; width: 100%; position: absolute; }
@@ -92,12 +92,12 @@
           var hours_back = 12
 
 
-      var map = L.Mapzen.map('map', {
+      var map = L.Nextzen.map('map', {
         center: [38.4294, -122.5822],
         zoom: 10,
         tangramOptions: {
           scene: 'scene.yaml', //was 1141, was /1119
-          attribution: '© <a href="https://www.mapzen.com/rights">Mapzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://www.mapzen.com/rights/#services-and-data-sources">others</a>'
+          attribution: '© <a href="https://www.nextzen.org/rights">Nextzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://here.xyz">HERE XYZ</a>'
         }
       });
       L.Mapzen.hash({
