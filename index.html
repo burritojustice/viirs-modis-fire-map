@@ -88,7 +88,7 @@
         zoom: 10,
         tangramOptions: {
           scene: 'scene.yaml', //was 1141, was /1119
-          attribution: '© <a href="https://www.nextzen.org/rights">Nextzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a> <a href="https://www.nextzen.org">others</a>'
+          attribution: '© <a href="https://www.nextzen.org/rights">Nextzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a><a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a>'
         }
       });
       L.Nextzen.hash({
@@ -113,11 +113,11 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-      scene.config.sources.modis_fires.url_params.tags = getDuration();
+      scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('modis');
-      scene.config.sources.viirs_7d.url_params.tags = getDuration();
+      scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('viirs');
-      scene.updateConfig();
+//       scene.updateConfig(); // this slows things down big time
       time_window = scene.config.global.window
       buildLegend();
       })
