@@ -114,10 +114,10 @@
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
       scene.config.sources.modis_fires.url_params.tags = getDuration();
-//       console.log('modis');
+      console.log('modis');
       scene.config.sources.viirs_7d.url_params.tags = getDuration();
-//       console.log('viirs');
-//       scene.updateConfig();
+      console.log('viirs');
+      scene.updateConfig();
       time_window = scene.config.global.window
       buildLegend();
       })
