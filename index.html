@@ -77,12 +77,12 @@
     <div id="map"></div>
     <script>
 
-        var scene,
-            legend,
-            window,
-            time_window;
-    var fire_colors = [0,30,60,90,120,150,180,225,250]
-
+      var scene,
+        legend,
+        window,
+        time_window;
+      var fire_colors = [0,30,60,90,120,150,180,225,250]
+      var days = 7
       var map = L.Nextzen.map('map', {
         center: [38.4294, -122.5822],
         zoom: 10,
@@ -113,9 +113,9 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-//       scene.config.sources.modis_fires.url_params.tags = getToday();
+      scene.config.sources.modis_fires.url_params.tags = getDuration();
 //       console.log('modis');
-//       scene.config.sources.viirs_7d.url_params.tags = getToday();
+      scene.config.sources.viirs_7d.url_params.tags = getDuration();
 //       console.log('viirs');
       time_window = scene.config.global.window
       buildLegend();
@@ -271,26 +271,25 @@
         return color
     }
     
-    function getToday(){
-        var d = new Date();
-        var year = d.getFullYear()
-        var month = d.getMonth() + 1
-        var date = d.getDate()
-        var today = year + '-' + month + '-' + date.padStart(2, '0')
-        var yesterday = year + '-' + month + '-' + (date - 1).padStart(2, '0')
-        var ereyesterday = year + '-' + month + '-' + (date - 2).padStart(2, '0')
-        var day_3 = year + '-' + month + '-' + (date - 3).padStart(2, '0')
-        var day_4 = year + '-' + month + '-' + (date - 4).padStart(2, '0')
-        var day_5 = year + '-' + month + '-' + (date - 5).padStart(2, '0')
-        var day_6 = year + '-' + month + '-' + (date - 6).padStart(2, '0')
-        var day_7 = year + '-' + month + '-' + (date - 7).padStart(2, '0')
-        // yes I know I should make this a loop
-
-//         console.log("today",today)
-        return date_range = today + ',' + yesterday + ',' + ereyesterday + ',' + day_3  + ',' + day_4 + ',' + day_5 + ',' + day_6 + ',' + day_7
-//         console.log(date_range)
-//         return date_range
+    function getDuration(){
+//       var t = 7
+      var tag //= []
+      var tag_string = ''
+      var d = new Date()
+      var options = {month: '2-digit', day: '2-digit'}
+      for (var i = 0; i < days; i++) { 
+          var year = d.getFullYear(options)
+        var month = d.getMonth(options) + 1
+        var date = d.getDate(options) - i
+        var date = date.toString().padStart(2, '0')
+        tag = year + '-' + month + '-' + date 
+          tag_string += tag + ','
+      }
+      console.log(tag_string)
+      return tag_string
     }
+      
+      
 
     </script>
   </body>
