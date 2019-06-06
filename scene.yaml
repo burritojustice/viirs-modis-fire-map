@@ -142,7 +142,8 @@ styles:
 sources:
 
     modis_fires:
-        url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y}
+        # url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y} #2018
+        url: https://xyz.api.here.com/hub/spaces/HvuuJKQW/tile/web/{z}_{x}_{y} #2019
         url_params: 
             access_token: Ki_CnlGQ_g22rwjBsPs5Bg
             clip: true
@@ -158,8 +159,8 @@ sources:
 
     viirs_7d:
         type: GeoJSON
-        # url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y}
-        url: https://xyz.api.here.com/hub/spaces/rrUK6Cb9/tile/web/{z}_{x}_{y}
+        # url: https://xyz.api.here.com/hub/spaces/rrUK6Cb9/tile/web/{z}_{x}_{y} #2018
+        url: https://xyz.api.here.com/hub/spaces/ZManj2D5/tile/web/{z}_{x}_{y} #2019
         url_params: 
             access_token: Ki_CnlGQ_g22rwjBsPs5Bg
             clip: true
