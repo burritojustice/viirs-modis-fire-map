@@ -121,7 +121,7 @@ global:
                 }
             return color
             }
-    window: 8 # hours per window
+    window: function(){return 8} # hours per window
     then: [2017,09,18,12] # date string, 0 is jan, 11 is dec
     
 styles:
