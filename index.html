@@ -113,9 +113,9 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-      scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
+//       scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('modis');
-      scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
+//      scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('viirs');
 //       scene.updateConfig(); // this slows things down big time
       time_window = scene.config.global.window
@@ -272,7 +272,7 @@
         return color
     }
     
-    function getDuration(){
+    function getDuration(){ // oh man this code is broken, doesn't handle going into the previous month
 //       var days = 7
       var comma = ','
       var tag
