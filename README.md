@@ -1,14 +1,15 @@
 # viirs-modis-fire-map
 
 Conterminous US and Hawaii fire data (375m resolution) as detected by NASA/NOAA VIIRS (Suomi polar orbit) and MODIS (1km resolution), along with active fire boundaries from the USGS. Brighter colors indicate newer data, slider lets you tune the colors.
-https://tangram.city/play/?scene=https://tangram.city/play/?scene=https%3A%2F%2Fraw.githubusercontent.com%2Fburritojustice%2Fviirs-modis-fire-map%2Fmaster%2Fviirs_modis_xyz.yaml#11.2541/34.1715/-118.7540#11.2541/34.1715/-118.7540
-~https://burritojustice.github.io/viirs-modis-fire-map/#lat=34.3966&lng=-119.2192&z=11.5542~ _while I work out dependencies..._
 
-Animation of data over time:
+https://burritojustice.github.io/viirs-modis-fire-map/#lat=37.188&lng=-116.995&z=6.6750
+
+![](viirs-modis-ventura.png)
+
+~Animation of data over time~: (sorry, broken right now)
 
 ~https://burritojustice.github.io/viirs-modis-fire-map/animation#lat=34.3966&lng=-119.2192&z=11.5542~
 
-![](viirs-modis-ventura.png)
 
 ## data
 
