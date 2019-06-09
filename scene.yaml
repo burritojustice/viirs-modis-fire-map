@@ -181,7 +181,7 @@ sources:
 layers:
     _here_sat:
         data: {source: _digitalglobe}
-        filter: {$zoom: {min: 15}}
+        filter: {$zoom: {min: 14}}
         draw:
             raster:
                 order: 1999 # draw on bottom
