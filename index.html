@@ -281,7 +281,7 @@
       var options = {month: '2-digit', day: '2-digit'}
       for (var i = 0; i < days; i++) { 
           d.setDate(d.getDate() - i)
-          tag =  d.toLocaleDateString(options)
+          tag = d.getYear + '-' + (d.getMonth + 1) + '-' + d.getDate
           tag_string += tag + comma
       }
       console.log(tag_string)
