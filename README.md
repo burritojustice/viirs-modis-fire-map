@@ -6,10 +6,6 @@ https://burritojustice.github.io/viirs-modis-fire-map/#lat=37.188&lng=-116.995&z
 
 ![](viirs-modis-ventura.png)
 
-~Animation of data over time~: (sorry, broken right now)
-
-~https://burritojustice.github.io/viirs-modis-fire-map/animation#lat=34.3966&lng=-119.2192&z=11.5542~
-
 
 ## data
 
@@ -26,6 +22,11 @@ This displays the 7 day file for the contiguous US -- you could easily load othe
 Fire names and boundaries are from GeoMAC/USGS -- these are updated daily, so don't expect to see it until a day after a fire is named.
 
 https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/
+
+~Animation of data over time~: (sorry, broken right now)
+
+~https://burritojustice.github.io/viirs-modis-fire-map/animation#lat=34.3966&lng=-119.2192&z=11.5542~
+
 
 ## map 
 
