@@ -271,23 +271,17 @@
 //         console.log('converted color to rgb 255:' + color.toString())
         return color
     }
-    
+//     getDuration()
     function getDuration(){ // oh man this code is broken, doesn't handle going into the previous month
-//       var days = 7
+      var days = 7
       var comma = ','
       var tag
       var tag_string = ''
       var d = new Date()
       var options = {month: '2-digit', day: '2-digit'}
       for (var i = 0; i < days; i++) { 
-          var year = d.getFullYear(options)
-          var month = d.getMonth(options) + 1
-          var date = d.getDate(options) - i
-          var date = date.toString().padStart(2, '0')
-          tag = year + '-' + month + '-' + date 
-            	if (i == (days -1)){
-                    comma = ""
-                 }
+          d.setDate(d.getDate() - i)
+          tag =  d.toLocaleDateString(options)
           tag_string += tag + comma
       }
       console.log(tag_string)
