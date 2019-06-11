@@ -141,6 +141,7 @@ styles:
 
 sources:
 
+
     modis_fires:
         # url: https://xyz.api.here.com/hub/spaces/ZOaZln0t/tile/web/{z}_{x}_{y} #2018
         url: https://xyz.api.here.com/hub/spaces/HvuuJKQW/tile/web/{z}_{x}_{y} #2019
@@ -178,13 +179,23 @@ sources:
         url: https://services.digitalglobe.com/mapservice/wmtsaccess?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=DigitalGlobe:ImageryTileService&featureProfile=Accuracy_Profile&FORMAT=image/png&STYLE=&CONNECTID=1b207260-1627-4a35-945e-089b8cf09f78&TileMatrixSet=EPSG:3857&TileMatrix=EPSG:3857:{z}&TileRow={y}&TileCol={x}
         type: Raster
         
+    terrain_normals: #make the satellite imagery pop a bit more 
+        type: Raster
+        url: https://tile.nextzen.org/tilezen/terrain/v1/512/normal/{z}/{x}/{y}.png
+        tile_size: 512
+        max_zoom: 14
+        url_params: { api_key: global.sdk_api_key }
+        
     _satellite:
         # url: https://1.aerial.maps.api.here.com/maptile/2.1/maptile/newest/terrain.day/{z}/{x}/{y}/512/png
         url: https://1.aerial.maps.api.here.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/512/png
         type: Raster
+        rasters: [terrain_normals]
         url_params:
             app_id: 0VeWPmMuUeMebnjNVGz9
             app_code: MVqjbI661R5lC2DqkAZpNg
+            
+
 
 layers:
     _here_sat:
