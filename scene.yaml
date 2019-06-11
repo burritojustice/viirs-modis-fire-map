@@ -177,6 +177,14 @@ sources:
     _digitalglobe:
         url: https://services.digitalglobe.com/mapservice/wmtsaccess?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=DigitalGlobe:ImageryTileService&featureProfile=Accuracy_Profile&FORMAT=image/png&STYLE=&CONNECTID=1b207260-1627-4a35-945e-089b8cf09f78&TileMatrixSet=EPSG:3857&TileMatrix=EPSG:3857:{z}&TileRow={y}&TileCol={x}
         type: Raster
+        
+    _satellite:
+        # url: https://1.aerial.maps.api.here.com/maptile/2.1/maptile/newest/terrain.day/{z}/{x}/{y}/512/png
+        url: https://1.aerial.maps.api.here.com/maptile/2.1/maptile/newest/satellite.day/{z}/{x}/{y}/512/png
+        type: Raster
+        url_params:
+            app_id: 0VeWPmMuUeMebnjNVGz9
+            app_code: MVqjbI661R5lC2DqkAZpNg
 
 layers:
     _here_sat:
