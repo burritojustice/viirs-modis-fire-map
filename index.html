@@ -271,7 +271,7 @@
 //         console.log('converted color to rgb 255:' + color.toString())
         return color
     }
-      
+    // generate tags for how many days we are looking at
     function getDuration(){ 
         var comma = ",";
         var tag;
@@ -283,7 +283,7 @@
           tag = x.toISOString().substr(0, 10).replace('T', ' ');
           tag_string += tag + comma;
         }
-      return tag_string
+      return tag_string.slice(0, -1) // get rid of that last comma
     }
       
       
