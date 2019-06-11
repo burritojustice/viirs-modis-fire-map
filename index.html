@@ -113,9 +113,9 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-//       scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
+      scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('modis');
-//      scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
+     scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
       console.log('viirs');
 //       scene.updateConfig(); // this slows things down big time
       time_window = scene.config.global.window
@@ -271,20 +271,18 @@
 //         console.log('converted color to rgb 255:' + color.toString())
         return color
     }
-//     getDuration()
-    function getDuration(){ // oh man this code is broken, doesn't handle going into the previous month
-      var days = 7
-      var comma = ','
-      var tag
-      var tag_string = ''
-      var d = new Date()
-      var options = {month: '2-digit', day: '2-digit'}
-      for (var i = 0; i < days; i++) { 
-          d.setDate(d.getDate() - i)
-          tag = d.getYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() 
-          tag_string += tag + comma
-      }
-      console.log(tag_string)
+      
+    function getDuration(){ 
+        var comma = ",";
+        var tag;
+        var tag_string = "";
+        var d = new Date();
+        for (var i = 0; i < days; i++){
+          var x = new Date();
+          x.setDate(d.getDate()-i)
+          tag = x.toISOString().substr(0, 10).replace('T', ' ');
+          tag_string += tag + comma;
+        }
       return tag_string
     }
       
