@@ -113,11 +113,12 @@
       console.log('tangram loaded')
       var tangramLayer = e.tangramLayer;
       scene = tangramLayer.scene;
-      scene.config.sources.modis_fires.url_params.tags = getDuration(); // usually doesn't get passed along
+      scene.config.sources.modis_fires.url_params.tags = getDuration(); // use tags to limit to however many days we're looking at
+      console.log(getDuration) 
       console.log('modis');
-     scene.config.sources.viirs_7d.url_params.tags = getDuration(); // usually doesn't get passed along
+      scene.config.sources.viirs_7d.url_params.tags = getDuration(); // use tags to limit to however many days we're looking at
       console.log('viirs');
-//       scene.updateConfig(); // this slows things down big time
+      scene.updateConfig(); // this slows things down big time
       time_window = scene.config.global.window
       buildLegend();
       })
