@@ -88,7 +88,7 @@
         zoom: 10,
         tangramOptions: {
           scene: 'scene.yaml', //was 1141, was /1119
-          attribution: '© <a href="https://www.nextzen.org/rights">Nextzen</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>, <a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS,</a><a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a>'
+          attribution: '<a href="https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/active-fire-data">NASA/NOAA</a>, <a href="https://rmgsc.cr.usgs.gov/outgoing/GeoMAC/current_year_fire_data/current_year_all_states/">USGS</a>, <a href="https://github.com/scuerda/modis-viirs-conversion">geolambda</a>, <a href="https://tangrams.readthedocs.io/en/latest/">Tangram</a>, <a href="https://www.nextzen.org/">Nextzen</a>, <a href="https://xyz.here.com/">HERE XYZ</a>'
         }
       });
       L.Nextzen.hash({
@@ -100,14 +100,6 @@
         position: 'bottomleft'
       };
       geocoder.addTo(map);
-//       L.Mapzen.bug({
-//         name: 'Sonoma & Napa VIIRS fire map',
-//         link: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
-//         tweet: 'US fire map of VIIRS/MODIS data, made with @mapzen',
-//         repo: 'https://github.com/burritojustice/sonoma-napa-fire-map-viirs',
-//         description: 'Zoomable map of VIIRS/MODIS data, ~12 hours per color, brighter colors newer data. Smaller circles = VIIRS 375m meter resolution data via NASA/NOAA I-Band Active Fire Data on Suomi polar orbiting satellite. Bigger circles = 1km MODIS data via Terra and Aqua satellites. Live shapefile -> GeoJSON conversion via geolambda! Thanks devseed! Click Github repo for more info.'
-// });
-
 
     map.on('tangramloaded', function(e){
       console.log('tangram loaded')
@@ -200,10 +192,10 @@
               
 
               container.innerHTML = '<div>'
-                + '<h3>VIIRS/MODIS Active Fire Detection</h3>' 
+                + '<h3>VIIRS/MODIS Active Fire Data</h3>' 
                 + '<h4>VIIRS (small circles) 375m resolution <br>' 
                 + 'MODIS (large circles) 1km resolution </h4>'
-                + 'Zoom in for metadata<br><a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more</a></p>'
+                + 'One week of data via HERE XYZ Spaces. Zoom in for metadata<br><a href="https://github.com/burritojustice/viirs-modis-fire-map">click to learn more.</a></p>'
                 + 'Age of satellite fire data'
                 + '<table id="hours">'
                 + table_row
